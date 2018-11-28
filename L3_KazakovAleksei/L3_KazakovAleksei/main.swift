@@ -42,9 +42,21 @@ struct Car {
     let brand: CarBrand
     let yearOfManufactory: Int
     let maxTrunkVolume: Int   // в метрах кубических
-    var currentVolume: Int
+    var currentVolume: Int {
+        didSet {
+            print("Сейчас в багажнике \(currentVolume) м3")
+        }
+    }
     var engineStatus: EngineStatus
-    var windowStatus: WindowStatus
+    var windowStatus: WindowStatus {
+        willSet {
+            if newValue == .open {
+                print("Окна открываются")
+            } else {
+                print("Окна закрываются")
+            }
+        }
+    }
     
     mutating func addToTrunk (addindVolume volume: Int) {
         if volume > maxTrunkVolume {
@@ -79,4 +91,13 @@ var car1 = Car (carType: .car, brand: .Mercedes, yearOfManufactory: 2017, maxTru
 var truck1 = Car (carType: .truck, brand: .Jeep, yearOfManufactory: 1998, maxTrunkVolume: 9000, currentVolume: 0, engineStatus: .on, windowStatus: .open)
 
 car1.addToTrunk(addindVolume: 600)
+car1.addToTrunk(addindVolume: 400)
+car1.removeFromTrunk(removingVolume: -5)
+car1.removeFromTrunk(removingVolume: 450)
+car1.removeFromTrunk(removingVolume: 300)
+truck1.addToTrunk(addindVolume: 8000)
+car1.openWindows()
+truck1.closeWindow()
 
+print(car1)
+print(truck1)
